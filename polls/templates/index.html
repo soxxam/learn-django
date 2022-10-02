@@ -1,0 +1,21 @@
+<html>
+<body>
+<p>List question:</p>
+
+<table border='1'>
+  <tr>
+    <th>ID</th>
+    <th>Question</th>
+    <th>Date</th>
+  </tr>
+  {% for x in mymembers %}
+    <tr>
+      <td>{{ x.id }}</td>
+        <td>{{ x.question_text }}</td>
+      <td>{{ x.pub_date }}</td>
+    </tr>
+  {% endfor %}
+</table>
+
+</body>
+</html>  
