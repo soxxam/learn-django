@@ -1,34 +1,33 @@
 from django.shortcuts import render
-from django.http import HttpResponse, Http404
-from django.template import loader
-import datetime
-from polls.models import Question, Choice
-from django.utils import timezone
+from django.http import HttpResponse
+from django.http import Http404
+
+
+from .models import Question
 
 
 def index(request):
-    mydata = Question.objects.all().order_by('-pub_date').values()
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render({'mymembers': mydata}, request))
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    context = {'latest_question_list': latest_question_list}
+    return render(request, 'index.html', context)
 
 def detail(request, question_id):
+    #cách 1
     try:
-        question = Question.objects.get(pk = question_id)
-        print(question)
+        question = Question.objects.get(pk=question_id)
+        list_choice = question.taichoices.all()
+        
+
     except Question.DoesNotExist:
         raise Http404("Question does not exist")
-    template = loader.get_template('detail.html')
-    return HttpResponse(template.render({'question': question,}, request))
 
-def result(request, result_id):
-    try:
-        result = Choice.objects.get(pk = result_id)
-        print(result)
-    except Question.DoesNotExist:
-        raise Http404("Question does not exist")
-    template = loader.get_template('result.html')
-    return HttpResponse(template.render({'question': result,}, request))
+    # cách 2 
+    # question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'detail.html', {'question': question, "tailistchoice" :list_choice})
 
-def some_name(request):
-    foo_instance = Question.objects.create(question_text='test',pub_date=timezone.now()- datetime.timedelta(days=1))
-    return render(request, 'detail.html')
+def results(request, question_id):
+    response = "You're looking at the results of question %s."
+    return HttpResponse(response % question_id)
+
+def vote(request, question_id):
+    return HttpResponse("You're voting on question %s." % question_id)

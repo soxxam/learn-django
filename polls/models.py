@@ -10,12 +10,14 @@ class Question(models.Model):
     def __str__(self):
          return self.question_text
 
-    def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+    def time_write(self):
+        return self.pub_date 
+    class Meta:
+        ordering = ("pub_date", "question_text")
 
 
 class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE,related_name="taichoices")
     choice_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
     def __str__(self):

@@ -1,21 +1,9 @@
-<html>
-<body>
-<p>List question:</p>
-
-<table border='1'>
-  <tr>
-    <th>ID</th>
-    <th>Question</th>
-    <th>Date</th>
-  </tr>
-  {% for x in mymembers %}
-    <tr>
-      <td>{{ x.id }}</td>
-        <td>{{ x.question_text }}</td>
-      <td>{{ x.pub_date }}</td>
-    </tr>
-  {% endfor %}
-</table>
-
-</body>
-</html>  
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
