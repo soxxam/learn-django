@@ -1,0 +1,11 @@
+<h1>{{ question.question_text }}</h1>
+
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+    <!-- Nó là một lọc khuôn mẫu, trả về hậu tố số nhiều, mặc định là 's' nếu giá trị trước lọc không phải là 1.
+     Ví dụ nếu có 2 vote thì vote{{ choice.votes|pluralize }} tương đương với vote{{ 2|pluralize }}, và đầu ra là votes. -->
+{% endfor %}
+</ul>
+
+<a href="{% url 'detail' question.id %}">Vote again?</a>
